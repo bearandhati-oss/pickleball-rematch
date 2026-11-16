@@ -1,0 +1,51 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<meta name="robots" content="noindex">
+<title>Join a room | Pickleball Rematch</title>
+<style>
+  :root { color-scheme: dark; }
+  body { margin: 0; font: 17px/1.5 -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif; background: #0F3D2E; color: #F7F4EC; }
+  main { max-width: 32rem; margin: 0 auto; padding: 2.5rem 1.25rem 3rem; text-align: center; }
+  h1 { font-size: 1.7rem; margin: 0 0 .5rem; }
+  p { margin: .75rem 0; }
+  .code { font: 700 2.6rem/1.2 ui-rounded, -apple-system, sans-serif; letter-spacing: .08em; margin: 1.25rem 0; font-variant-numeric: tabular-nums; }
+  .go { display: inline-block; background: #DBFA33; color: #0F3D2E; font-weight: 800; font-size: 1.25rem; text-decoration: none; padding: .9rem 2.2rem; border-radius: 999px; margin: .5rem 0 1rem; }
+  .quiet { color: #9FE6D2; font-size: .95rem; }
+  a { color: #9FE6D2; }
+  [hidden] { display: none; }
+</style>
+</head>
+<body>
+<main>
+  <h1>Pickleball Rematch</h1>
+  <div id="ok" hidden>
+    <p>You are invited to an Open Play room.</p>
+    <p class="code" id="code"></p>
+    <p><a class="go" id="go" href="#">Open the game</a></p>
+    <p class="quiet">If the button does nothing, open Pickleball Rematch, tap Open Play, and type the code.</p>
+  </div>
+  <div id="bad" hidden>
+    <p>This invite link has no room code in it.</p>
+    <p class="quiet">Ask your friend for the eight digit code, open Pickleball Rematch, tap Open Play, and type it in.</p>
+  </div>
+  <p class="quiet">Rooms are direct between the players' phones through Apple Game Center. This page stores nothing and sends nothing.</p>
+  <p class="quiet"><a href="index.html">About the game</a> · <a href="support.html">Support</a> · <a href="privacy.html">Privacy</a></p>
+</main>
+<script>
+  // Reads the code from the address, shows it, and points the button at the app. Nothing leaves this page.
+  (function () {
+    var raw = new URLSearchParams(location.search).get("code") || "";
+    var digits = raw.replace(/[^0-9]/g, "");
+    var clean = /^[0-9\- ]*$/.test(raw) && digits.length === 8;
+    if (!clean) { document.getElementById("bad").hidden = false; return; }
+    var code = digits.slice(0, 4) + "-" + digits.slice(4);
+    document.getElementById("code").textContent = code;
+    document.getElementById("go").href = "pickleballrematch://join?code=" + code;
+    document.getElementById("ok").hidden = false;
+  })();
+</script>
+</body>
+</html>
